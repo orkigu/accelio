@@ -2507,15 +2507,17 @@ int xio_connection_disconnected(struct xio_connection *connection)
 	xio_connection_notify_msgs_flush(connection);
 
 	if (connection->nexus) {
-		if (connection->session->lead_connection &&
-		    connection->session->lead_connection->nexus ==
-		    connection->nexus) {
+		if (!connection->session->lead_connection) {
+			close = 1;
+		} else if (connection->session->lead_connection->nexus ==
+		    	   connection->nexus) {
 			connection->session->lead_connection = NULL;
 			close = 1;
 		}
-		if (connection->session->redir_connection &&
-		    connection->session->redir_connection->nexus ==
-		    connection->nexus) {
+		if (!connection->session->redir_connection) {
+			close = 1;
+		} else if (connection->session->redir_connection->nexus ==
+		    	   connection->nexus) {
 			connection->session->redir_connection = NULL;
 			close = 1;
 		}
