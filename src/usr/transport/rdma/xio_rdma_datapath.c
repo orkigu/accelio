@@ -689,6 +689,7 @@ static void xio_handle_wc_error(struct ibv_wc *wc, struct xio_srq *srq)
 			ERROR_LOG("cq error reported. calling " \
 				  "rdma_disconnect. rdma_hndl:%p\n",
 				  rdma_hndl);
+			abort();
 			retval = rdma_disconnect(rdma_hndl->cm_id);
 			if (retval)
 				ERROR_LOG("rdma_hndl:%p rdma_disconnect" \
